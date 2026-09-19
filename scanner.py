@@ -1,4 +1,6 @@
 import subprocess
+import csv
+import json
 from datetime import datetime
 from pathlib import Path
 
@@ -17,6 +19,8 @@ reports_dir.mkdir(exist_ok=True)
 
 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 report_file = reports_dir / f"scan_{timestamp}.txt"
+json_report = reports_dir / f"scan_{timestamp}.json"
+csv_report = reports_dir / f"scan_{timestamp}.csv"
 
 print(f"\nScanning target: {target}")
 print("Please wait...\n")
@@ -51,9 +55,17 @@ try:
 
     if not findings:
         print("No monitored ports requiring risk classification were detected.")
+
+    report_data = {"target": target, "scan_time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"), "findings": findings}
     
     report_file.write_text(result.stdout + "\n\n" + "=" * 50 + "\n          SECURITY RISK ANALYSIS\n" + "=" * 50 + "\n" + ("\n".join(findings) if findings else "No monitored ports requiring risk classification were detected."))
     
+    with csv_report.open("w", newline="") as csv_file:
+        writer = csv.DictWriter(csv_file, fieldnames=["target", "scan_time", "finding"])
+        writer.writeheader()
+        for finding in findings:
+            writer.writerow({"target": target, "scan_time": report_data["scan_time"], "finding": finding})
+    json_report.write_text(json.dumps(report_data, indent=4))
     print("\nScan complete.")
     print(f"Report saved to: {report_file}")
 
