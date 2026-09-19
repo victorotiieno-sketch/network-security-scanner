@@ -24,9 +24,7 @@ A Python-based network security scanning project built with Kali Linux and Nmap.
 ```text
 network-security-scanner/
 ├── scanner.py
-├── scanner_backup.py
 ├── discover.py
-├── discover_backup.py
 ├── reports/
 └── scan-results.txt
 ```
