@@ -9,6 +9,7 @@ A Python-based network security scanning project built with Kali Linux and Nmap.
 * Identify running services
 * Perform service and version detection
 * Save scan results to report files
+* Classify selected open ports by security risk level
 * Maintain separate discovery and scanning tools
 * Designed for authorized security testing and lab environments
 
@@ -80,6 +81,16 @@ A test scan identified the following open TCP ports on the lab host `10.0.2.2`:
 
 Nmap also identified the host as a Windows system.
 
+## Security Risk Classification
+
+The scanner analyzes selected open ports and assigns a basic risk level based on commonly associated network services. This classification is intended as a security-awareness aid and does not by itself confirm that a service is vulnerable.
+
+Example:
+
+| Port | Service | Risk |
+| ---- | ------- | ---- |
+| 445  | SMB     | High |
+
 ## Learning Objectives
 
 This project demonstrates practical experience with:
@@ -104,7 +115,6 @@ Do not scan networks or systems without authorization.
 Planned improvements include:
 
 * Automated host selection
-* Security risk classification
 * Improved report formatting
 * CSV and JSON report generation
 * Configurable network ranges
