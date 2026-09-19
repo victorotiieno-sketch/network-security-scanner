@@ -1,5 +1,4 @@
-```text
 __pycache__/
 *.pyc
 *_backup.py
-```
+reports/
