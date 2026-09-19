@@ -6,9 +6,43 @@ from pathlib import Path
 
 print("=" * 50)
 print("       NETWORK SECURITY SCANNER")
+print("Network: 10.0.2.0/24")
+
+network = "10.0.2.0/24"
 print("=" * 50)
 
-target = input("Enter target IP address: ").strip()
+
+
+print("\nDiscovering active hosts...")
+discovery = subprocess.run(
+    ["nmap", "-sn", network],
+    capture_output=True,
+    text=True
+)
+
+hosts = []
+
+for line in discovery.stdout.splitlines():
+    if "Nmap scan report for" in line:
+        host = line.split()[-1]
+        hosts.append(host)
+
+print("\nActive hosts found:")
+
+for number, host in enumerate(hosts, 1):
+    print(f"{number}. {host}")
+
+if not hosts:
+    print("No active hosts found.")
+    exit()
+
+choice = input("\nSelect a host number to scan: ").strip()
+
+if not choice.isdigit() or not 1 <= int(choice) <= len(hosts):
+    print("Invalid selection.")
+    exit()
+
+target = hosts[int(choice) - 1]
 
 if not target:
     print("Error: IP address cannot be empty.")
